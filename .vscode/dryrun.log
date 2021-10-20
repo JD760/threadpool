@@ -1,0 +1,20 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/jacob/Documents/Projects/threadpool'
+cp -r res/ bin/
+mkdir -p obj/
+g++ -pthread -Wall -O3 -g -Iinc -I/usr/local/include -c -o obj/pool.o src/pool.cpp
+g++ -pthread -Wall -O3 -g -Iinc -MM src/pool.cpp > obj/pool.d
+cp -f obj/pool.d obj/pool.d.tmp
+sed -e 's|.*:|obj/pool.o:|' < obj/pool.d.tmp > obj/pool.d
+sed -e 's/.*://' -e 's/\\$//' < obj/pool.d.tmp | fmt -1 | sed -e 's/^ *//' -e 's/$/:/' >> obj/pool.d
+rm -f obj/pool.d.tmp
+mkdir -p obj/
+g++ -pthread -Wall -O3 -g -Iinc -I/usr/local/include -c -o obj/main.o src/main.cpp
+g++ -pthread -Wall -O3 -g -Iinc -MM src/main.cpp > obj/main.d
+cp -f obj/main.d obj/main.d.tmp
+sed -e 's|.*:|obj/main.o:|' < obj/main.d.tmp > obj/main.d
+sed -e 's/.*://' -e 's/\\$//' < obj/main.d.tmp | fmt -1 | sed -e 's/^ *//' -e 's/$/:/' >> obj/main.d
+rm -f obj/main.d.tmp
+g++ -o bin/pool obj/pool.o obj/main.o -pthread
+make: Leaving directory '/home/jacob/Documents/Projects/threadpool'
+ 
