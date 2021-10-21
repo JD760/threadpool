@@ -4,6 +4,8 @@
 int main() {
     std::cout << "Hello World!" << std::endl;
     threadpool::pool *myPool = (threadpool::pool *)std::malloc(sizeof(threadpool::pool));
-    myPool->shutdown();
+    threadpool::task myTask;
+    
+    myPool->addTask(&myTask);
     return 0;
 }
