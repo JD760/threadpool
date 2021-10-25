@@ -21,14 +21,6 @@ typedef struct task {
     long id;
 }task;
 
-
-typedef enum state {
-    Working = 1,
-    Sleeping = 2,
-    Shutdown = 3,
-    ForcefulShutdown = 4
-}state;
-
 /* classes */
 
 class pool {
@@ -40,7 +32,10 @@ class pool {
     int shutdown(int mode=3);
 
  private:
-    state poolState;
+    enum poolState {
+        "Working" = 1,
+        "Sleeping" = 2,
+    }
 
     //  task queue
     int queueLength;
@@ -55,6 +50,8 @@ class pool {
     pthread_t poolThread;
     pthread_t *threads;
     int numThreads;
+    int sleeping;
+    int active;
 
     // conditions
     pthread_cond_t newTasks;  

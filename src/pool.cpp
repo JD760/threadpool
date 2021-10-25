@@ -11,6 +11,7 @@
  * when started, pool waits for tasks and a subsequent start execution
  * signal before beginning task processing
 */
+
 threadpool::pool::pool(int numThreads) {  // constructor
     this->poolState = Sleeping;
     
@@ -29,9 +30,8 @@ threadpool::pool::pool(int numThreads) {  // constructor
     this->threads = (pthread_t *) std::malloc(sizeof(pthread_t) * numThreads);
     for (int i = 0; i < numThreads; i++) {
         pthread_create(
-                &this->threads[i], NULL, threadpool::workerThread, NULL
+                &this->threads[i], NULL, threadpool::workerThread, (void *)this
         );
-        
     }
     return;
 }
@@ -59,3 +59,9 @@ int threadpool::pool::addTask( threadpool::task *task) {
     std::cout << this->queueLength;
     return 0;
 }
+
+void *threadpool::workerThread(void *poolTemp) {
+    threadpool::pool *pool = (threadpool::pool *)poolTemp;
+    return NULL;
+}
+
